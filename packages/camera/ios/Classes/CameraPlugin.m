@@ -54,6 +54,14 @@
   return self;
 }
 
+- (UIImage *)normalizedImage:(UIImage *)image {
+  UIGraphicsBeginImageContextWithOptions(image.size, NO, image.scale);
+  [image drawInRect:(CGRect){0, 0, image.size}];
+  UIImage *normalizedImage = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return normalizedImage;
+}
+
 - (void)captureOutput:(AVCapturePhotoOutput *)output
     didFinishProcessingPhotoSampleBuffer:(CMSampleBufferRef)photoSampleBuffer
                 previewPhotoSampleBuffer:(CMSampleBufferRef)previewPhotoSampleBuffer
@@ -76,6 +84,7 @@
   }
 
   UIImage *image = [[UIImage alloc] initWithData:data];
+  image = [self normalizedImage:image];
   if(image.size.width < 720.0 || image.size.height < 720.0) {
     _result(data);
   }
@@ -95,7 +104,6 @@
   UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   NSData *imageData = UIImageJPEGRepresentation(newImage, 1.0);
-
   _result(imageData);
 }
 @end
