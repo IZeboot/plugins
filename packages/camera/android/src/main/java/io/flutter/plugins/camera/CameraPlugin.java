@@ -599,9 +599,9 @@ public class CameraPlugin implements MethodCallHandler {
                 // convert bytes to bitmap
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 // set quality image 
-                bitmap = Bitmap.createScaledBitmap( bitmap, captureSize.getWidth(), captureSize.getHeight(), false);
+                bitmap = Bitmap.createScaledBitmap( bitmap, previewSize.getWidth(), (int) ((previewSize.getWidth() * captureSize.getHeight())/captureSize.getWidth()), false);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
                 // convert bitmap to bytes
                 byte[] byteArray = stream.toByteArray();
                 bitmap.recycle();
